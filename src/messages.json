@@ -1,0 +1,19 @@
+
+[
+    {
+      "title": "John Doe",
+      "content": "Hey there! Just checking in to see how you're doing.",
+      "received": "2 hours ago"
+    },
+    {
+      "title": "Jane Smith",
+      "content": "Reminder: The meeting is scheduled for 3 PM tomorrow.",
+      "received": "1 hour ago"
+    },
+    {
+      "title": "Alex Johnson",
+      "content": "I finished the report. Let me know if changes are needed.",
+      "received": "30 minutes ago"
+    }
+]
+  
