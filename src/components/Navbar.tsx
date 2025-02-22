@@ -118,8 +118,8 @@ const Navbar = () => {
                                 <ul className="py-2 overflow-y-auto text-gray-700 dark:text-gray-200">
                                     {usernameMessage === "Username Found" ? (
                                         results.map((user, index) => (
-                                            <Link href={`/u/${user.username}`}>
-                                                <li key={index}>
+                                            <Link href={`/u/${user.username}`} key={index}>
+                                                <li>
 
                                                     <a className="flex items-center my-1 px-4 py-2 hover:bg-black hover:text-white border-[3px] border-black justify-center">
                                                         <FaUser className="w-6 h-6 me-2 rounded-full p-1 border-black border-[1px]" />

@@ -1,3 +1,4 @@
+/*
 import mongoose from "mongoose";
 
 //optional to put this because of typescript ConnectionObject we are just modifying the connection string to give use the number part from there
@@ -29,5 +30,36 @@ const dbConnect = async():Promise<void>=>{
         process.exit(1); //exiting gracefully
     }
 }
+
+export default dbConnect;
+
+*/
+
+import mongoose from "mongoose";
+
+const MONGO_URI = process.env.MONGODB_URI||'';
+
+if (!MONGO_URI) {
+  throw new Error("MongoDB URI is not defined!");
+}
+
+// Use a global cache to prevent multiple connections in Next.js
+let cached = (global as any).mongoose || { conn: null, promise: null };
+
+async function dbConnect(): Promise<void> {
+  if (cached.conn) {
+    console.log("Already connected to MongoDB");
+    return;
+  }
+
+  if (!cached.promise) {
+    cached.promise = mongoose.connect(MONGO_URI, {}).then((mongoose) => mongoose);
+  }
+
+  cached.conn = await cached.promise;
+  console.log(`\n MongoDB connected !! DB HOST : ${cached.conn.connection.host}`);
+}
+
+(global as any).mongoose = cached; // Store in global scope to persist connection
 
 export default dbConnect;

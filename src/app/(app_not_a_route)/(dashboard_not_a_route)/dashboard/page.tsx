@@ -72,7 +72,7 @@ const Page = () => {
     } finally {
       setIsSwitchLoading(false) //Toggle switch - Ensures that isSwitchLoading is set back to false once the operation is complete.
     }
-  }, [setValue])
+  }, [setValue, toast])
 
 
   //while Loader is Spinninng these operations will be performed 
@@ -114,7 +114,7 @@ const Page = () => {
       setIsLoading(false)
       setIsSwitchLoading(false)
     }
-  }, [setIsLoading, setmessages])
+  }, [setIsLoading, setmessages, toast])
 
   // useEffect is used to perform side effects in a functional component. it doesnot remeber the previous computation. 
   //useeffect will run in background
@@ -164,24 +164,39 @@ const Page = () => {
 
 
   //URL CREATION FOR USER:-
+  const [profileUrl, setProfileUrl] = useState<string | null>(null);
+
   const username = session?.user?.username; // get username from session
 
   //window.location.protocol returns the protocol part of the URL (e.g., http: or https:).
   //window.location.host  returns the host part of the URL (e.g., example.com or localhost:3000).
   //const baseUrl creates a base URL by combining the protocol and host. For example, if the current URL is https://example.com, baseUrl will be https://example.com.
-  const baseUrl = `${window.location.protocol}//${window.location.host}`
+
   // creates a profile URL using the base URL and the username, eg:- https://example.com/u/john_doe.
-  const profileUrl = `${baseUrl}/u/${username}`
+  
+  useEffect(() => {
+    if (typeof window !== "undefined" && session?.user?.username) {
+      const baseUrl = `${window.location.protocol}//${window.location.host}`;
+      setProfileUrl(`${baseUrl}/u/${session.user.username}`);
+    }
+  }, [session]);
 
   //COPY TO Clipboard FOR USER
   const copyToClipboard = () => {
     // Clipboard API to copy text to the clipboard
     //youwont get navigator in server componet you get it only in client componet
-    navigator.clipboard.writeText(profileUrl)
-    toast({
-      title: "URL Copied",
-      description: "Profile URL has been copied to clipboard"
-    })
+    if (profileUrl) {
+      navigator.clipboard.writeText(profileUrl)
+      toast({
+        title: "URL Copied",
+        description: "Profile URL has been copied to clipboard"
+      })
+    } else {
+      toast({
+        title: "Error",
+        description: "Profile URL is not available"
+      })
+    }
   }
 
 
@@ -203,7 +218,7 @@ const Page = () => {
           <div className="flex items-center">
             <input
               type="text"
-              value={profileUrl}
+              value={profileUrl ?? ""}
               disabled
               className="input input-bordered w-full p-2 mr-2"
             />

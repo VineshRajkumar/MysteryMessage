@@ -1,4 +1,5 @@
 //REMEMBER WE ARE USING ZOD ONLY TO CHECK IF USERNAME OR THE THING MENTIONED IS VALID OR NOT(LIKE WHEATHER IT CONTAINES @ ETC LIKE THAT ) WE ARE NOT CHECKING WHETHER IT EXISTS IN DATABASE OR NOT HERE 
+export const dynamic = "force-dynamic";
 import dbConnect from "@/lib/dbConnect";
 import UserModel from "@/model/user.model";
 import {z} from 'zod'
