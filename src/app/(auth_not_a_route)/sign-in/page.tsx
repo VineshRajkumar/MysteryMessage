@@ -3,10 +3,10 @@
 
 'use client'
 import { zodResolver } from "@hookform/resolvers/zod"
-
+import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form"
 import * as z from "zod" //* will import everything from zod libaray
-import { useState } from "react"
+import { useState,useEffect } from "react"
 
 import { useToast } from "@/components/ui/use-toast"
 import { useRouter } from "next/navigation"
@@ -26,10 +26,18 @@ import { signIn } from "next-auth/react"
 const Page = () => {
 
     const [issubmitting, setisSubmitting] = useState(false) //is form submitted - A boolean that indicates if the form is currently being submitted.
-
+    const { data: session, status } = useSession();
 
     const { toast } = useToast()
     const router = useRouter() //allows for navigation between pages.
+
+
+    useEffect(() => {
+        if (status === "authenticated") {
+            router.push("/dashboard");
+        }
+    }, [status, router]);
+
 
     //infer means interface
     const form = useForm<z.infer<typeof signInSchema>>({ //<z.infer<typeof signInSchema>> this is written becuase of typescript error handling feature because of this it will become conform that zod will follow signInSchema
